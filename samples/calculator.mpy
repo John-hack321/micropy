@@ -1,0 +1,27 @@
+num1 = int(input('enter first number'))
+num2 = int(input('enter second number'))
+print("chose an operator")
+print("1:  multiply ")
+print("2:  divide ")
+print("3:  add ")
+print("4:  subtract ")
+operator = int(input('enter operator'))
+if operator == 1:
+    result = num1 * num2
+if operator == 2:
+    result = num1 / num2
+if operator == 3:
+    result = num1 + num2
+if operator == 4:
+    result = num1 - num2
+print(result)
+message = "yay the calculator works"
+while result < 5:
+    print(message)
+boolean_value = num1 == num2
+print(boolean_value)
+if boolean_value == True:
+    print("hurray the value was true")
+print("1:  multiply ")
+if boolean_value and num1 < 3:
+    print(f"the boolean value was {boolean_value} and num1 is less than 3")
