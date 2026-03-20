@@ -121,7 +121,7 @@ micropy/
 
 ---
 
-## Phase 1 — Lexical Analysis (Scanner) ✅
+## Phase 1 — Lexical Analysis (Scanner) 
 
 The scanner is the first phase of the compiler. It reads raw MicroPy source code character by character and converts it into a stream of classified tokens.
 
@@ -185,10 +185,6 @@ python main.py path/to/yourprogram.mpy
 ### Sample Output
 
 ```
-────────────────────────────────────────────────────────────
-  MicroPy Compiler — Lexical Analysis
-  File: samples/calculator.mpy
-────────────────────────────────────────────────────────────
 
   TOKEN TYPE     | VALUE                               | LINE
   ────────────────────────────────────────────────────────────
@@ -199,10 +195,7 @@ python main.py path/to/yourprogram.mpy
   KEYWORD        | 'input'                             | 1
   ...
 
-────────────────────────────────────────────────────────────
-  Total tokens: 149
-  ✅ No errors found.
-────────────────────────────────────────────────────────────
+
 ```
 
 ---
@@ -211,10 +204,10 @@ python main.py path/to/yourprogram.mpy
 
 | Phase | Description | Status |
 |---|---|---|
-| **Phase 1** | Lexical Analysis — Scanner | ✅ Complete |
-| **Phase 2** | Syntax Analysis — Parser | 🔄 Coming soon |
-| **Phase 3** | Semantic Analysis | 🔄 Coming soon |
-| **Phase 4** | Code Generation | 🔄 Coming soon |
+| **Phase 1** | Lexical Analysis — Scanner |  Complete |
+| **Phase 2** | Syntax Analysis — Parser |  Coming soon |
+| **Phase 3** | Semantic Analysis | Coming soon |
+| **Phase 4** | Code Generation |  Coming soon |
 
 ---
 
