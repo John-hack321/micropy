@@ -3,7 +3,6 @@ from enum import Enum
 
 # here we define all the token types in teh Token data structure for all the valid token types
 
-
 # All valid token types in MicroPy
 class TokenType(Enum):
     # Literals

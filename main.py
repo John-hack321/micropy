@@ -31,16 +31,18 @@ def run_file(filepath: str):
         if tok.type.value not in ("EOF", "NEWLINE"):
             print(f"  {tok.type.value:<14} | {repr(tok.value):<35} | {tok.line}")
 
+    """  no need to do summary since we alrady know the code works
     # print summary
     print(f"\n{'─' * 60}")
     visible = [t for t in tokens if t.type.value not in ("EOF", "NEWLINE")]
     print(f"  Total tokens: {len(visible)}")
     errors.summary()
     print(f"{'─' * 60}\n")
+    """
 
 
 if __name__ == "__main__":
-    # if a file path was passed as argument use it
+    # guys i made it to accept a file path as parameter bytheway so we can always work with custom files.
     # otherwise fall back to the default sample
     if len(sys.argv) > 1:
         run_file(sys.argv[1])
