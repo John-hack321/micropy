@@ -1,5 +1,5 @@
 #  lexer/lexer.py
-#
+
 #  The Lexer (Scanner) for MicroPy.
 #  Takes raw source code as input.
 #  Produces a list of Tokens as output.
@@ -7,7 +7,6 @@
 from typing import List, Optional
 from lexer.token import Token, TokenType, KEYWORDS, BOOLEANS, LOGICAL_OPS
 from utils.error_handler import ErrorHandler
-
 
 class Lexer:
     def __init__(self, source: str, error_handler: ErrorHandler):
@@ -20,13 +19,13 @@ class Lexer:
 
     def current(self) -> Optional[str]:
         """
-        show us What character we are looking at right now
+        shows us What character we are looking at right now
         """
         if self.pos < len(self.source):
             return self.source[self.pos]
         return None
 
-    def peek(self, offset: int = 1) -> Optional[str]:
+    def peek(self, offset: int = 1) -> Optional[str]: # we can either return the character at the position in question or not depending on usage of the function 
         """
         Look ahead without moving. 
         we will mostly use this for == <= >= etc.
@@ -52,6 +51,7 @@ class Lexer:
         """
         self.tokens.append(Token(type=type, value=value, line=self.line))
 
+    # this is the main function that handles all the tokenization process and scanning of the source code
     def tokenize(self) -> List[Token]:
         """
         Walk through the entire source code character by character.
@@ -88,7 +88,7 @@ class Lexer:
         if ch == '\n':
             self.add_token(TokenType.NEWLINE, "\\n")
             self.advance()
-            self.line += 1
+            self.line += 1 # everytime we encounter a newline character we increment the line variable so that we know on which line we are
             self.handle_indent()
             return
 
@@ -156,6 +156,7 @@ class Lexer:
     #  Each one collects all characters
     #  that belong to one token
 
+
     def read_string(self, quote_char: str): # takes in the quote character ( either " or ')
         """
         Collects everything between matching quote characters ( strings are always between matching quote characters )
@@ -163,7 +164,7 @@ class Lexer:
         so at the end of string we need to confirm if the quote marches the opening quote in order to label the string
         a valid string  
         """
-        self.advance()  # consume opening quote since it is not part os the string word itself
+        self.advance()  # consume opening quote since it is not part os the string word itself 
         result = ""
         while self.current() and self.current() != quote_char:
             if self.current() == '\n':
@@ -181,7 +182,7 @@ class Lexer:
         The {variable} parts inside will be handled by the parser.
         """
         self.advance()  # consume 'f'
-        quote_char = self.advance()  # consume opening quote and assign it to quote char so that we know when our string is valid
+        quote_char = self.advance()  # we now konw openning quote was a double quote
         result = ""
         while self.current() and self.current() != quote_char:
             if self.current() == '\n':
@@ -195,24 +196,27 @@ class Lexer:
     def read_number(self):
         """
         Collect digits
-        Also handles decimals like 3.14 NOTE : We need to make this only to support integers"""        
-        num = ""
+        Also handles decimals like 3.14 NOTE : We need to make this only to support integers"""  
+        num = "123"
         while self.current() and self.current().isdigit():
             num += self.advance()
         # check for decimal point NOTE : We will remove this decimal suport as its not supposed to be ther since our language scope is not in supoort
+        """
         if self.current() == '.' and self.peek() and self.peek().isdigit():
-            num += self.advance()  # consume '.'
+            num += self.advance()  # consume '.'tes
             while self.current() and self.current().isdigit():
                 num += self.advance()
+        """
         self.add_token(TokenType.NUMBER, num)
+
 
     def read_word(self):
         """
         Collect a full word (letters, digits, underscores).
         Then decide: is it a keyword, boolean, logical op, or identifier?
         """
-        word = ""
-        while self.current() and (self.current().isalnum() or self.current() == '_'):
+        word = "int"
+        while self.current() and (self.current().isalnum() or self.current() == '_'): # NOTE: this is just like a filter for other chars that are not letters or digits or underscores 
             word += self.advance()
 
         if word in KEYWORDS:
