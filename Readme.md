@@ -70,7 +70,7 @@ open-vsx.org/extension/john-otieno-okello/micropy-syntax
 |---|---|---|
 | `KEYWORD` | Reserved words | `if`, `else`, `while`, `print`, `input`, `int` |
 | `IDENTIFIER` | Variable names | `x`, `count`, `boolean_value` |
-| `NUMBER` | Integer and float literals | `42`, `3.14` |
+| `NUMBER` | Integer | `42` |
 | `STRING` | Text in quotes | `"hello"`, `'world'` |
 | `FSTRING` | Formatted strings | `f"value is {x}"` |
 | `BOOLEAN` | Logical truth values | `True`, `False` |
@@ -92,9 +92,6 @@ open-vsx.org/extension/john-otieno-okello/micropy-syntax
 - `print()` — output to console
 - `input()` — read user input
 - `int()` — convert to integer
-- `str()` — convert to string
-- `float()` — convert to float
-
 ---
 
 ## Project Structure
@@ -106,17 +103,17 @@ micropy/
 │   ├── __init__.py
 │   ├── token.py             ← Token class, TokenType enum, reserved words
 │   └── lexer.py             ← Lexer/Scanner — full lexical analysis
-├── parser/                  ← coming soon
+├── parser/                  ← coming in subsequent phases
 │   └── __init__.py
-├── semantic/                ← coming soon
+├── semantic/                ← coming in subsequent phases
 │   └── __init__.py
-├── codegen/                 ← coming soon
+├── codegen/                 ← coming in subsequent phases
 │   └── __init__.py
 ├── utils/
 │   ├── __init__.py
 │   └── error_handler.py     ← centralised error reporting
 └── samples/
-    └── calculator.mpy       ← sample MicroPy program
+    └── calculator.mpy       ← default sample MicroPy program for testing
 ```
 
 ---
@@ -169,7 +166,7 @@ print("done")   ← DEDENT token generated here
 
 ```bash
 # Clone the repository
-git clone https://github.com/john-otieno-okello/micropy.git
+git clone git clone git@github.com:John-hack321/micropy.git
 cd micropy
 
 # Run on the default sample program
@@ -223,7 +220,3 @@ Built by **Group 3** as part of a Compiler Construction course project.
 | Collins Upendo | P15/136859/2019 |
 
 ---
-
-## License
-
-MIT — free to use, modify and distribute.

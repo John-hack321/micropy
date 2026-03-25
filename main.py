@@ -31,7 +31,7 @@ def run_file(filepath: str):
         if tok.type.value not in ("EOF", "NEWLINE"):
             print(f"  {tok.type.value:<14} | {repr(tok.value):<35} | {tok.line}")
 
-    """  no need to do summary since we alrady know the code works
+    """  no need to do summary since we alrady know the code works and what is expected of the code
     # print summary
     print(f"\n{'─' * 60}")
     visible = [t for t in tokens if t.type.value not in ("EOF", "NEWLINE")]

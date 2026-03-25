@@ -1,9 +1,3 @@
-#  lexer/lexer.py
-
-#  The Lexer (Scanner) for MicroPy.
-#  Takes raw source code as input.
-#  Produces a list of Tokens as output.
-
 from typing import List, Optional
 from lexer.token import Token, TokenType, KEYWORDS, BOOLEANS, LOGICAL_OPS
 from utils.error_handler import ErrorHandler
@@ -197,11 +191,11 @@ class Lexer:
         """
         Collect digits
         Also handles decimals like 3.14 NOTE : We need to make this only to support integers"""  
-        num = "123"
+        num = ""
         while self.current() and self.current().isdigit():
             num += self.advance()
         # check for decimal point NOTE : We will remove this decimal suport as its not supposed to be ther since our language scope is not in supoort
-        """
+        """  currently we have made our program to avoid decimals so there is no need of handling decimals here
         if self.current() == '.' and self.peek() and self.peek().isdigit():
             num += self.advance()  # consume '.'tes
             while self.current() and self.current().isdigit():
@@ -215,7 +209,7 @@ class Lexer:
         Collect a full word (letters, digits, underscores).
         Then decide: is it a keyword, boolean, logical op, or identifier?
         """
-        word = "int"
+        word = ""
         while self.current() and (self.current().isalnum() or self.current() == '_'): # NOTE: this is just like a filter for other chars that are not letters or digits or underscores 
             word += self.advance()
 

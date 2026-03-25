@@ -4,7 +4,7 @@ from enum import Enum
 # here we define all the token types in teh Token data structure for all the valid token types
 
 # All valid token types in MicroPy
-class TokenType(Enum):
+class TokenType(Enum):             # some examples
     # Literals
     NUMBER      = "NUMBER"
     STRING      = "STRING"
@@ -32,7 +32,7 @@ class TokenType(Enum):
 @dataclass
 class Token:
     type:  TokenType   
-    value: str         # this give us the actual text from the sourcode
+    value: str         # this give us the actual character from the sourcode
     line:  int         # this one tells which line it was on so that we can do error handling perfectly
 
     def __repr__(self):

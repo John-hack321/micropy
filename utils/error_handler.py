@@ -1,5 +1,3 @@
-# a central way of handling errors
-
 from dataclasses import dataclass, field
 from typing import List
 
@@ -11,7 +9,7 @@ class CompileError:
     line:    int   # trachs which line in the source code the error occured at
 
 
-# ── The error handler ──
+# The error handler
 class ErrorHandler:
     def __init__(self):
         self.errors: List[CompileError] = []
@@ -22,7 +20,7 @@ class ErrorHandler:
         """
         error = CompileError(phase=phase, message=message, line=line)
         self.errors.append(error)
-        # in our compiler we print the error immediately so that it si seen as it happens
+        # in our compiler we print the error immediately so that it is seen as it happens
         print(f"  [{phase} Error] Line {line}: {message}")
 
     def has_errors(self) -> bool:
