@@ -39,6 +39,8 @@ def run_file(filepath: str):
     errors.summary()
     print(f"{'─' * 60}\n")
     """
+    errors.summary()
+
 
 
 if __name__ == "__main__":

@@ -210,7 +210,7 @@ python main.py path/to/yourprogram.mpy
 
 ## Authors
 
-Built by **Group 3** as part of a Compiler Construction course project.
+Built by **Group 22** as part of a Compiler Construction course project.
 
 | Name | Admission Number |
 |---|---|

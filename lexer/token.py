@@ -41,6 +41,6 @@ class Token:
 
 # micropy Reserved words for easier access form all parts of the program including the futer parser files and more
 
-KEYWORDS    = {"if", "else", "while", "print", "input", "int", "str", "float"}
+KEYWORDS    = {"if", "else", "while", "print", "input", "int", "str"}
 BOOLEANS    = {"True", "False"}
 LOGICAL_OPS = {"and", "or"}
