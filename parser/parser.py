@@ -8,6 +8,11 @@
 #  Every grammar rule in the BNF spec maps to one method here.
 # ─────────────────────────────────────────────────────────────
 
+"""
+this is the parser phase for the parse . it is what we build ontop of the lexer
+please find it on the github repo on this branch (follow link below)
+"""
+
 from typing import List, Optional, Any
 from lexer.token import Token, TokenType
 from parser.nodes import (
