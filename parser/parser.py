@@ -11,6 +11,10 @@
 """
 this is the parser phase for the parse . it is what we build ontop of the lexer
 please find it on the github repo on this branch (follow link below)
+
+git@github.com:John-hack321/micropy.git 
+fetch and pull code from the repo for read and write purpoese : the repo is open to all. 
+
 """
 
 from typing import List, Optional, Any
@@ -30,18 +34,23 @@ class Parser:
         self.pos     = 0
         self.errors  = error_handler
 
-    # ─────────────────────────────────────────────────────────
-    #  HELPERS — same idea as the lexer helpers but for tokens
-    # ─────────────────────────────────────────────────────────
+    # 
+    #  HELPERS
+    #  just the same idea like in the lexer but now deal with the object notation of how the tokens ares tructured.
+    # 
 
     def current(self) -> Token:
-        """What token are we looking at right now?"""
+        """What token are we looking at right now?
+            gets the token we are at now and returns : what happens after decides on what the parent function wanted.
+        """
         if self.pos < len(self.tokens):
             return self.tokens[self.pos]
         return self.tokens[-1]  # return EOF token
 
     def peek(self, offset: int = 1) -> Token:
-        """Look ahead without consuming."""
+        """Look ahead without consumin.
+            just like in the parse but now for handling the token stream.
+        """
         p = self.pos + offset
         if p < len(self.tokens):
             return self.tokens[p]
@@ -56,8 +65,8 @@ class Parser:
     def expect(self, type: TokenType, value: str = None) -> Token:
         """
         Consume a token and verify it matches what we expect.
-        If it does not match — report an error.
-        This is how the parser enforces grammar rules.
+        If it does not match : report an error.
+        this is how we enforce grammar just like in the CC class where we had lookahead fuction for our case we only look one character into the future
         """
         token = self.current()
         if token.type != type:
@@ -85,14 +94,20 @@ class Parser:
         """Have we reached the end of the token stream?"""
         return self.current().type == TokenType.EOF
 
-    # ─────────────────────────────────────────────────────────
+    """
+    NOTE: to do this , to make this as easy as possible and feasable for the amount of time we had. 
+    the best option was to map every bnf rule in our grammer into a function that hanldes that bnf rule just as shown in the functions that follow below
+    """
+
+    # 
     #  ENTRY POINT
     #  <program> ::= <statement>+
-    # ─────────────────────────────────────────────────────────
+    # this is the entrypoint for the parser
+    # it parses the entire program to pruduce a list of statemens 
 
     def parse(self) -> ProgramNode:
         """
-        Entry point — parse the entire program.
+        Entry point : parse the entire program.
         Keeps parsing statements until end of file.
         Returns a ProgramNode containing all statements.
         """
@@ -107,47 +122,49 @@ class Parser:
 
         return ProgramNode(statements=statements)
 
-    # ─────────────────────────────────────────────────────────
+    #  handles the four different types of statements that are handled in our language specification.
     #  STATEMENT
     #  <statement> ::= <assignment>
     #                | <if_stmt>
     #                | <while_stmt>
     #                | <print_stmt>
     #                | <builtin_call>
-    # ─────────────────────────────────────────────────────────
+    # 
 
     def parse_statement(self) -> Optional[Any]:
         """
         Look at the current token and decide which kind
         of statement we are dealing with.
-        This is the main decision point of the parser.
+        this is the main decision point of our parser since : 
+            1) it determines the next steps of what we are going to do thus if we get it wrong it we are screwed
+            2) it hold all the other kinds of nodes / grammar rules defined in our program
         """
         self.skip_newlines()
         token = self.current()
 
-        # ── if statement ──
+        #  if statement 
         if token.type == TokenType.KEYWORD and token.value == "if":
             return self.parse_if_statement()
 
-        # ── while statement ──
+        # while statement
         if token.type == TokenType.KEYWORD and token.value == "while":
             return self.parse_while_statement()
 
-        # ── print statement ──
+        # print statement 
         if token.type == TokenType.KEYWORD and token.value == "print":
             return self.parse_print_statement()
 
-        # ── assignment: IDENTIFIER = <expression> or <condition> ──
+        # assignment: IDENTIFIER = <expression> or <condition> 
         # We check: current is IDENTIFIER and next is ASSIGNMENT
         if (token.type == TokenType.IDENTIFIER and
                 self.peek().type == TokenType.ASSIGNMENT):
             return self.parse_assignment()
 
-        # ── standalone builtin call e.g int(input(...)) ──
+        # standalone builtin call e.g int(input(...)) 
         if token.type == TokenType.KEYWORD and token.value in ("int", "input", "str", "float"):
             return self.parse_builtin_call()
 
-        # ── unknown statement ──
+        # unknown statement
         self.errors.report(
             "Parser",
             f"Unexpected token '{token.value}'",
@@ -156,11 +173,12 @@ class Parser:
         self.advance()  # skip it and keep going
         return None
 
-    # ─────────────────────────────────────────────────────────
     #  ASSIGNMENT
     #  <assignment> ::= IDENTIFIER "=" <expression>
-    # ─────────────────────────────────────────────────────────
 
+    """
+    for each funtion bnf rule grammar specificatoin we have an example at the top for easier interpratation
+    """
     def parse_assignment(self) -> AssignmentNode:
         """
         Parses: x = 10
@@ -177,11 +195,9 @@ class Parser:
             line  = name_token.line
         )
 
-    # ─────────────────────────────────────────────────────────
     #  IF STATEMENT
     #  <if_stmt> ::= "if" <condition> ":" <block>
     #              | "if" <condition> ":" <block> "else" ":" <block>
-    # ─────────────────────────────────────────────────────────
 
     def parse_if_statement(self) -> IfNode:
         """
@@ -218,10 +234,8 @@ class Parser:
             line       = line
         )
 
-    # ─────────────────────────────────────────────────────────
     #  WHILE STATEMENT
     #  <while_stmt> ::= "while" <condition> ":" <block>
-    # ─────────────────────────────────────────────────────────
 
     def parse_while_statement(self) -> WhileNode:
         """
@@ -242,10 +256,10 @@ class Parser:
             line      = line
         )
 
-    # ─────────────────────────────────────────────────────────
+    
     #  PRINT STATEMENT
     #  <print_stmt> ::= "print" "(" <expression> ")"
-    # ─────────────────────────────────────────────────────────
+
 
     def parse_print_statement(self) -> PrintNode:
         """
@@ -262,10 +276,8 @@ class Parser:
 
         return PrintNode(value=value, line=line)
 
-    # ─────────────────────────────────────────────────────────
     #  BLOCK
     #  <block> ::= INDENT <statement>+ DEDENT
-    # ─────────────────────────────────────────────────────────
 
     def parse_block(self) -> List[Any]:
         """
@@ -274,26 +286,24 @@ class Parser:
         Returns a list of statement nodes.
         """
         statements = []
-        self.expect(TokenType.INDENT)   # must see INDENT — block starts here
+        self.expect(TokenType.INDENT)   # must see INDENT block starts here
         self.skip_newlines()
 
         # keep parsing statements until we hit DEDENT or EOF
         while (not self.is_at_end() and
-               self.current().type != TokenType.DEDENT):
+                self.current().type != TokenType.DEDENT):
             stmt = self.parse_statement()
             if stmt:
                 statements.append(stmt)
             self.skip_newlines()
 
-        self.expect(TokenType.DEDENT)   # must see DEDENT — block ends here
+        self.expect(TokenType.DEDENT)   # must see DEDENT block ends here
         return statements
 
-    # ─────────────────────────────────────────────────────────
     #  CONDITION
     #  <condition> ::= <expression> <compare_op> <expression>
     #               | <condition> "and" <condition>
     #               | <condition> "or"  <condition>
-    # ─────────────────────────────────────────────────────────
 
     def parse_condition(self) -> Any:
         """
@@ -320,12 +330,10 @@ class Parser:
 
         return left
 
-    # ─────────────────────────────────────────────────────────
     #  EXPRESSION
     #  <expression> ::= <term>
     #                 | <expression> "+" <term>
     #                 | <expression> "-" <term>
-    # ─────────────────────────────────────────────────────────
 
     def parse_expression(self) -> Any:
         """
@@ -335,19 +343,17 @@ class Parser:
         left = self.parse_term()
 
         while (self.current().type == TokenType.OPERATOR and
-               self.current().value in ('+', '-')):
+                self.current().value in ('+', '-')):
             op    = self.advance().value    # consume + or -
             right = self.parse_term()
             left  = BinaryOpNode(left=left, op=op, right=right)
 
         return left
 
-    # ─────────────────────────────────────────────────────────
     #  TERM
     #  <term> ::= <factor>
     #           | <term> "*" <factor>
     #           | <term> "/" <factor>
-    # ─────────────────────────────────────────────────────────
 
     def parse_term(self) -> Any:
         """
@@ -358,19 +364,17 @@ class Parser:
         left = self.parse_factor()
 
         while (self.current().type == TokenType.OPERATOR and
-               self.current().value in ('*', '/')):
+                self.current().value in ('*', '/')):
             op    = self.advance().value    # consume * or /
             right = self.parse_factor()
             left  = BinaryOpNode(left=left, op=op, right=right)
 
         return left
 
-    # ─────────────────────────────────────────────────────────
     #  FACTOR
     #  <factor> ::= NUMBER | STRING | FSTRING | BOOLEAN
     #             | IDENTIFIER | "(" <expression> ")"
     #             | <builtin_call>
-    # ─────────────────────────────────────────────────────────
 
     def parse_factor(self) -> Any:
         """
@@ -379,43 +383,43 @@ class Parser:
         """
         token = self.current()
 
-        # ── integer number ──
+        #  integer number 
         if token.type == TokenType.NUMBER:
             self.advance()
             return NumberNode(value=token.value, line=token.line)
 
-        # ── string ──
+        #  string 
         if token.type == TokenType.STRING:
             self.advance()
             return StringNode(value=token.value, line=token.line)
 
-        # ── f-string ──
+        # f-string
         if token.type == TokenType.FSTRING:
             self.advance()
             return FStringNode(value=token.value, line=token.line)
 
-        # ── boolean ──
+        # boolean
         if token.type == TokenType.BOOLEAN:
             self.advance()
             return BooleanNode(value=token.value, line=token.line)
 
-        # ── identifier (variable name) ──
+        # identifier (variable name)
         if token.type == TokenType.IDENTIFIER:
             self.advance()
             return IdentifierNode(name=token.value, line=token.line)
 
-        # ── grouped expression: ( expression ) ──
+        # grouped expression: ( expression )
         if token.type == TokenType.DELIMITER and token.value == "(":
             self.advance()                   # consume (
             expr = self.parse_expression()   # parse inside
             self.expect(TokenType.DELIMITER, ")")  # consume )
             return expr
 
-        # ── builtin function call: int(...) input(...) ──
+        # builtin function call: int(...) input(...)
         if token.type == TokenType.KEYWORD and token.value in ("int", "input", "str", "float"):
             return self.parse_builtin_call()
 
-        # ── unexpected token ──
+        # unexpected token
         self.errors.report(
             "Parser",
             f"Unexpected token '{token.value}' in expression",
@@ -424,13 +428,11 @@ class Parser:
         self.advance()
         return NumberNode(value="0", line=token.line)  # return dummy node to keep going
 
-    # ─────────────────────────────────────────────────────────
     #  BUILTIN CALL
     #  <builtin_call> ::= "int"   "(" <expression> ")"
     #                   | "input" "(" <expression> ")"
     #                   | "str"   "(" <expression> ")"
     #                   | "float" "(" <expression> ")"
-    # ─────────────────────────────────────────────────────────
 
     def parse_builtin_call(self) -> BuiltinCallNode:
         """
@@ -452,7 +454,7 @@ class Parser:
         )
 
 
-# patch: make expect tolerant of EOF for DEDENT
+# make expect tolerant of EOF for DEDENT : I added this to handle EOF
 _original_expect = Parser.expect
 def _tolerant_expect(self, type, value=None):
     if type == TokenType.DEDENT and self.current().type == TokenType.EOF:

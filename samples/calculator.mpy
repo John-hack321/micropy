@@ -1,5 +1,1 @@
-result = 2 + 3 * 4
-if result == 14:
-    print("result is 14")
-else:
-    print("result is not 14")
+10 = x

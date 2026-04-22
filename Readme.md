@@ -182,17 +182,22 @@ python main.py path/to/yourprogram.mpy
 ### Sample Output
 
 ```
+  PHASE 1 — Lexical Analysis 
 
-  TOKEN TYPE     | VALUE                               | LINE
+  TOKEN TYPE      | VALUE                               | LINE
+  NUMBER          | '10'                                | 1
+  ASSIGNMENT      | '='                                 | 1
+  IDENTIFIER      | 'x'                                 | 1
+
+  Total tokens: 3
+
+ PHASE 2 : Parser => Parsing (AST)
   ────────────────────────────────────────────────────────────
-  IDENTIFIER     | 'num1'                              | 1
-  ASSIGNMENT     | '='                                 | 1
-  KEYWORD        | 'int'                               | 1
-  DELIMITER      | '('                                 | 1
-  KEYWORD        | 'input'                             | 1
-  ...
+Parser Error: Unexpected token '10' on line 1
+Parser Error: Unexpected token '=' on line 1
+Parser Error: Unexpected token 'x' on line 1
 
-
+3 error(s) found
 ```
 
 ---
@@ -201,8 +206,8 @@ python main.py path/to/yourprogram.mpy
 
 | Phase | Description | Status |
 |---|---|---|
-| **Phase 1** | Lexical Analysis — Scanner |  Complete |
-| **Phase 2** | Syntax Analysis — Parser |  Coming soon |
+| **Phase 1** | Lexical Analysis — Scanner | Complete |
+| **Phase 2** | Syntax Analysis — Parser | In Progress |
 | **Phase 3** | Semantic Analysis | Coming soon |
 | **Phase 4** | Code Generation |  Coming soon |
 
