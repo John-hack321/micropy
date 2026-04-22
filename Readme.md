@@ -2,8 +2,8 @@
 
 A compiler for **MicroPy** — a simplified subset of Python designed for teaching and demonstrating core compiler construction concepts.
 
-> ⚠️ **Current Status: Phase 1 Complete — Lexical Analysis (Scanner)**
-> The parser, semantic analyser and code generator are under active development.
+> ⚠️ **Current Status: Phase 2 Complete — Syntax Analysis (Parser)**
+> The semantic analyser and code generator are under active development.
 
 ---
 
@@ -103,8 +103,10 @@ micropy/
 │   ├── __init__.py
 │   ├── token.py             ← Token class, TokenType enum, reserved words
 │   └── lexer.py             ← Lexer/Scanner — full lexical analysis
-├── parser/                  ← coming in subsequent phases
-│   └── __init__.py
+├── parser/
+│   ├── __init__.py
+│   ├── nodes.py             ← AST node classes for all syntax constructs
+│   └── parser.py            ← Recursive Descent Parser — full syntax analysis
 ├── semantic/                ← coming in subsequent phases
 │   └── __init__.py
 ├── codegen/                 ← coming in subsequent phases
@@ -135,6 +137,7 @@ Raw Source Code  →  Lexer  →  Token Stream
 ```
 
 ### Features of the Scanner
+
 - ✅ Recognises all 11 token types
 - ✅ Handles both single `'` and double `"` quoted strings
 - ✅ Handles f-strings with `{variable}` expressions inside
@@ -146,6 +149,7 @@ Raw Source Code  →  Lexer  →  Token Stream
 - ✅ Handles decimal numbers — `3.14`, `0.5`
 
 ### Indentation Handling
+
 Unlike most languages that use `{ }` for blocks, MicroPy follows Python's indentation style. The scanner automatically generates `INDENT` and `DEDENT` tokens when indentation increases or decreases:
 
 ```mpy
@@ -153,6 +157,73 @@ if x > 5:
     print(x)    ← INDENT token generated here
 print("done")   ← DEDENT token generated here
 ```
+
+---
+
+## Phase 2 — Syntax Analysis (Parser)
+
+The parser is the second phase of the compiler. It takes the token stream from the lexer and builds an Abstract Syntax Tree (AST) that represents the program's structure according to MicroPy's grammar rules.
+
+### Parser Workflow
+
+```text
+Token Stream  →  Parser  →  Abstract Syntax Tree
+IDENTIFIER x  ↓
+ASSIGNMENT =  ↓
+NUMBER 42     ↓
+OPERATOR +    ↓
+IDENTIFIER y  ↓
+                AssignmentNode
+                ├── name: "x"
+                └── value: BinaryOpNode
+                    ├── left: NumberNode(42)
+                    ├── op: "+"
+                    └── right: IdentifierNode("y")
+```
+
+### Features of the Parser
+
+- ✅ **Recursive Descent Parser** — maps every BNF grammar rule to a method
+- ✅ **Complete AST Generation** — produces structured syntax trees for all statements
+- ✅ **Operator Precedence** — correctly handles `*`/`/` before `+`/`-`
+- ✅ **Control Structures** — parses `if/else`, `while` loops with proper block handling
+- ✅ **Expression Parsing** — handles arithmetic, logical, and comparison expressions
+- ✅ **Built-in Functions** — parses `print()`, `input()`, `int()`, `str()`, `float()`
+- ✅ **Indentation Handling** — works with `INDENT`/`DEDENT` tokens from the lexer
+- ✅ **Error Recovery** — reports syntax errors with line numbers and continues parsing
+- ✅ **AST Visualization** — includes pretty-printing function for debugging
+
+### AST Node Types
+
+The parser generates these node types (defined in `parser/nodes.py`):
+
+**Statement Nodes:**
+
+- `AssignmentNode` — variable assignments (`x = 42`)
+- `IfNode` — conditional statements with optional else blocks
+- `WhileNode` — loop constructs
+- `PrintNode` — print statements
+- `BuiltinCallNode` — calls to built-in functions
+
+**Expression Nodes:**
+
+- `BinaryOpNode` — arithmetic operations (`+`, `-`, `*`, `/`)
+- `LogicalOpNode` — logical operations (`and`, `or`)
+- `NumberNode`, `StringNode`, `FStringNode`, `BooleanNode` — literals
+- `IdentifierNode` — variable references
+
+**Root Node:**
+
+- `ProgramNode` — contains all statements in the program
+
+### Grammar Coverage
+
+The parser implements the complete MicroPy grammar:
+
+- **Statements**: assignments, conditionals, loops, prints, function calls
+- **Expressions**: arithmetic with proper precedence, comparisons, logical operations
+- **Block Structure**: proper handling of indented code blocks
+- **Built-ins**: support for all specified built-in functions
 
 ---
 
@@ -207,7 +278,7 @@ Parser Error: Unexpected token 'x' on line 1
 | Phase | Description | Status |
 |---|---|---|
 | **Phase 1** | Lexical Analysis — Scanner | Complete |
-| **Phase 2** | Syntax Analysis — Parser | In Progress |
+| **Phase 2** | Syntax Analysis — Parser | Complete |
 | **Phase 3** | Semantic Analysis | Coming soon |
 | **Phase 4** | Code Generation |  Coming soon |
 
