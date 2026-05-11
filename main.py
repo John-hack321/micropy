@@ -47,7 +47,7 @@ def run_file(filepath: str):
         return
 
     # Phase 2: Parsing
-    print(f"\n \n PHASE 2 : Parser => Parsing (AST)")
+    print(f"\n \n PHASE 2 : Parser => Parsing ()")
     print(f"  {'─' * 50}")
     parser = Parser(tokens, errors)
     ast    = parser.parse()
@@ -57,7 +57,6 @@ def run_file(filepath: str):
     print(f"\n{'─' * 60}")
     errors.summary()
     #print(f"{'─' * 60}\n") no need for this lower bound
-
 
 if __name__ == "__main__":
     run_file(sys.argv[1] if len(sys.argv) > 1 else "samples/calculator.mpy")

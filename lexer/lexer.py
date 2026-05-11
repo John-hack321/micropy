@@ -8,7 +8,7 @@ class Lexer:
         self.errors        = error_handler
         self.pos           = 0      # current character position
         self.line          = 1      # current line number
-        self.tokens        : List[Token] = []
+        self.tokens        : List[Token] = [] # this is what we pass to the parser.
         self.indent_stack  : List[int]   = [0]  # tracks indentation levels
 
     def current(self) -> Optional[str]:

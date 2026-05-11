@@ -454,7 +454,7 @@ class Parser:
         )
 
 
-# make expect tolerant of EOF for DEDENT : I added this to handle EOF
+## make expect tolerant of EOF for DEDENT : I added this to handle EOF
 _original_expect = Parser.expect
 def _tolerant_expect(self, type, value=None):
     if type == TokenType.DEDENT and self.current().type == TokenType.EOF:

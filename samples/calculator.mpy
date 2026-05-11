@@ -1,1 +1,2 @@
-10 = x
+while 5 < 100:
+    print("it is bigger")

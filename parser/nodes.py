@@ -70,7 +70,7 @@ class WhileNode(Node):
     condition: Any       = None
     body:      List[Any] = field(default_factory=list)
 
-# ROOT NODE : everything is help here.
+# ROOT NODE : everything is held here. : all the statement live here.
 
 @dataclass
 class ProgramNode(Node):
@@ -82,7 +82,6 @@ class LogicalOpNode(Node):
     left:  Any = None
     op:    str = ""
     right: Any = None
-
 
 
 # I tried to do add these lines to give our AST printed on the terminal a better visualization tweak as you want at will.
