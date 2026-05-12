@@ -63,8 +63,11 @@ def run_file(filepath: str):
 
     #print(f"{'─' * 60}\n") no need for this lower bound
 
-    # Phase 3: Semantic Analysis
-    print(f" \n \n \n PHASE 3 — Semantic Analysis (Symbol Table & Checks)")
+    # Phase 3: Semantic Analysis & Intermediate Code Generation
+    print(f" \n \n \n PHASE 3 — Semantic Analysis & Intermediate Code Generation")
+    
+    # Semantic Analysis
+    print(f"\n  --- Semantic Analysis (Symbol Table & Checks) ---")
     semantic_analyser = SemanticAnalyser(errors)
     symbol_table = semantic_analyser.analyse(ast)
     print_symbol_table(symbol_table)
@@ -73,8 +76,8 @@ def run_file(filepath: str):
         errors.summary()
         return
 
-    # Phase 4: Intermediate Code Generation
-    print(f" \n \n \n PHASE 4 — Intermediate Code Generation  (Quadruples)")
+    # Intermediate Code Generation
+    print(f"\n  --- Intermediate Code Generation (Quadruples) ---")
     icg   = ICG()
     quads = icg.generate(ast)
     print_quads(quads)
