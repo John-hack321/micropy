@@ -8,6 +8,7 @@ import os
 from lexer.lexer import Lexer
 from parser.parser import Parser
 from parser.nodes import print_ast
+from semantic.analyser import SemanticAnalyser, print_symbol_table
 from codegen.icg import ICG, print_quads
 from utils.error_handler import ErrorHandler
 
@@ -62,10 +63,18 @@ def run_file(filepath: str):
 
     #print(f"{'─' * 60}\n") no need for this lower bound
 
-    # Phase 3: Intermediate Code Generation
-    # print(f"\n{'═' * 62}") no need for this too . 
-    print(f" \n \n \n PHASE 3 — Intermediate Code Generation  (Quadruples)")
-    # print(f"{'-' * 62}\n") no need for this other bound too
+    # Phase 3: Semantic Analysis
+    print(f" \n \n \n PHASE 3 — Semantic Analysis (Symbol Table & Checks)")
+    semantic_analyser = SemanticAnalyser(errors)
+    symbol_table = semantic_analyser.analyse(ast)
+    print_symbol_table(symbol_table)
+
+    if errors.has_errors():
+        errors.summary()
+        return
+
+    # Phase 4: Intermediate Code Generation
+    print(f" \n \n \n PHASE 4 — Intermediate Code Generation  (Quadruples)")
     icg   = ICG()
     quads = icg.generate(ast)
     print_quads(quads)

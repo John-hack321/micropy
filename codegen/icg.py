@@ -9,7 +9,7 @@
 #  translate into target code.
 #
 #  Quadruple format
-#  ─────────────────
+#
 #  | op          | arg1      | arg2      | result    |
 #  |-------------|-----------|-----------|-----------|
 #  | +  -  *  /  | operand   | operand   | temp var  |
@@ -22,7 +22,6 @@
 #  | if_false    | condition | _         | label     |
 #  | goto        | _         | _         | label     |
 #  | label       | _         | _         | label     |
-# ─────────────────────────────────────────────────────────────
 
 from typing import List, Tuple, Any
 from parser.nodes import (
@@ -109,7 +108,7 @@ class ICG:
         rhs = self._gen_expr(node.value)
         self._emit("=", rhs, "_", node.name)
 
-    # ── if / if-else ──────────────────────────────────────────
+    # if / if-else 
     #
     #  Pattern (no else):
     #      <evaluate condition → t0>
@@ -149,7 +148,7 @@ class ICG:
                 self._gen_statement(stmt)
             self._emit("label", "_",  "_",    l_end)
 
-    # ── while ─────────────────────────────────────────────────
+    # while 
     #
     #  Pattern:
     #      label      _    _   L_start

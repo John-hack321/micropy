@@ -1,0 +1,49 @@
+# Semantic Errors Demo - This file contains various semantic issues
+# Run: python main.py samples/semantic_errors_demo.mpy
+
+# 1. Use before assignment errors
+print(undefined_var)          # Error: Variable used before assignment
+result = unknown + 5          # Error: 'unknown' used before assignment
+
+# 2. Unused variables
+unused_var = 42               # Warning: Assigned but never used
+another_unused = "hello"     # Warning: Assigned but never used
+
+# 3. Variables that may not be assigned (conditional assignment)
+if False:
+    maybe_assigned = 10       # Only assigned in unreachable block
+print(maybe_assigned)         # Warning: May not be assigned
+
+while False:
+    also_maybe = 20           # Only assigned in unreachable loop
+print(also_maybe)             # Warning: May not be assigned
+
+# 4. Static division by zero
+div_by_zero = 100 / 0         # Error: Division by zero detected
+
+# 5. Unreachable code warnings
+if True:
+    reachable_var = 1
+else:
+    unreachable_var = 2       # Warning: Unreachable code
+
+while False:
+    never_runs = 3            # Warning: Unreachable code
+
+# 6. Variables with mixed definite/possible assignment
+x = 10                        # Definitely assigned
+if x > 5:
+    y = 20                    # Possibly assigned
+print(x)                      # OK - x is definitely assigned
+print(y)                      # Warning: y may not be assigned
+
+# 7. Complex expressions with undefined variables
+complex_result = (a + b) * (c - d)  # Multiple use-before-assignment errors
+
+# 8. F-string with undefined variables
+name = "Alice"
+print(f"Hello {name} and {undefined_friend}")  # Error: undefined_friend used in f-string
+
+# 9. Some correct code to show it still works
+valid_var = 100
+print(valid_var)             # This should work fine

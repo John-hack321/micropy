@@ -1,0 +1,12 @@
+# Test file for semantic analysis
+x = 5
+y = 10
+z = x + y
+print(z)
+print(undefined_var)  # Should error: use before assignment
+unused = 42           # Should warn: unused variable
+if True:
+    maybe_assigned = 1
+print(maybe_assigned)  # Should warn: may not be assigned
+zero = 0
+result = 10 / zero     # Should error: division by zero
