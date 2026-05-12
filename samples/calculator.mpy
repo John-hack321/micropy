@@ -1,2 +1,3 @@
-while 5 < 100:
+num3 = 3 + 2
+while num3 < 100:
     print("it is bigger")
